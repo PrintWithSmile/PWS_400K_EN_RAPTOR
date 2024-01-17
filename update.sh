@@ -110,7 +110,7 @@ cleanup
 echo \"Script completed successfully.\"
 "
 
-NEW_SCRIPT2="KERNEL=="sda1", SUBSYSTEMS=="usb", ACTION=="add", RUN+="/var/lib/pws/mountflash", SYMLINK+="usbflash""
+NEW_SCRIPT2='KERNEL=="sda1", SUBSYSTEMS=="usb", ACTION=="add", RUN+="/var/lib/pws/mountflash", SYMLINK+="usbflash"'
 
 if ! command -v zip &> /dev/null; then
     sudo apt-get update
@@ -134,7 +134,6 @@ if [ ! -d "$slozka" ]; then
 	./install.sh
 fi
 
-# Check if the file exists and contains the expected content
 if [ -e "$FILE_PATH" ]; then
     if [ "$(cat "$FILE_PATH")" = "$OLD_SCRIPT" ]; then
 		echo -e "orangepi1234\n$NEW_SCRIPT" | sudo -S tee "$FILE_PATH" > /dev/null
@@ -146,7 +145,7 @@ if [ -e "$FILE_PATH" ]; then
         echo "Content replaced successfully."
     fi
 fi
-
+ 
 if [ -e "$FILE_PATH2" ]; then
     if [ "$(cat "$FILE_PATH2")" = "$OLD_SCRIPT2" ]; then
         echo -e "orangepi1234\n" | sudo -S sh -c 'echo -n > "$FILE_PATH2"'
@@ -154,7 +153,6 @@ if [ -e "$FILE_PATH2" ]; then
 		echo -e "orangepi1234\n" | sudo -S rm /var/lib/pws/unmountflash
 		echo -e "orangepi1234\n" | sudo -S systemctl daemon-reload
 		echo -e "orangepi1234\n" | sudo -S systemctl restart systemd-udevd
-
     else
 		echo -e "orangepi1234\n" | sudo -S sh -c 'echo -n > "$FILE_PATH2"'
 		echo -e "orangepi1234" | sudo -S sh -c "echo '$NEW_SCRIPT2' > '$FILE_PATH2'"
@@ -162,27 +160,6 @@ if [ -e "$FILE_PATH2" ]; then
 		echo -e "orangepi1234\n" | sudo -S systemctl daemon-reload
 		echo -e "orangepi1234\n" | sudo -S systemctl restart systemd-udevd
     fi
-fi
-
-if ! command -v zip &> /dev/null; then
-    sudo apt-get update
-    sudo apt-get install zip -y
-
-    if [ $? -eq 0 ]; then
-        echo "ZIP utility installed successfully."
-    else
-        echo "Failed to install ZIP utility."
-        exit 1
-    fi
-fi
-
-slozka="/home/pi/Klipper_IP"
-
-if [ ! -d "$slozka" ]; then
-    git clone https://github.com/PrintWithSmile/Klipper_IP.git
-	cd Klipper_IP
-	chmod +x install.sh
-	./install.sh
 fi
 
 echo "Creating backup"
