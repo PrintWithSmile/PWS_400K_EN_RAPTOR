@@ -3,7 +3,7 @@
 moonraker_file="/home/pi/printer_data/config/moonraker.conf"
 
 text="https://github.com/Spectoda/spectoda-bridge-pws400k.git"
-
+text2="https://github.com/PrintWithSmile/spectoda-bridge-pws400k.git"
 slozka="/home/pi/Klipper_IP"
 
 if ! command -v zip &> /dev/null; then
@@ -28,13 +28,27 @@ fi
 
 if [ -f "$moonraker_file" ]; then
     if grep -q "$text" "$moonraker_file"; then
-		rm -r -f spectoda-bridge-pws400k/
+		rm -r -f /home/pi/spectoda-bridge-pws400k/
 		wait
+		cd /home/pi
 		git clone https://github.com/PrintWithSmile/spectoda-bridge-pws400k.git 
 		wait
-		cd spectoda-bridge-pws400k && npm i
+		cd /home/pi/spectoda-bridge-pws400k && npm i
 		wait
 		sed -i 's#https://github.com/Spectoda/spectoda-bridge-pws400k.git#https://github.com/PrintWithSmile/spectoda-bridge-pws400k.git#g' ~/printer_data/config/moonraker.conf
+		wait
+		systemctl restart spectoda-bridge-pws400k
+	fi
+fi
+
+if [ -f "$moonraker_file" ]; then
+    if grep -q "$text2" "$moonraker_file"; then
+		rm -r -f /home/pi/spectoda-bridge-pws400k/
+		wait
+		cd /home/pi
+		git clone https://github.com/PrintWithSmile/spectoda-bridge-pws400k.git 
+		wait
+		cd /home/pi/spectoda-bridge-pws400k && npm i
 		wait
 		systemctl restart spectoda-bridge-pws400k
 	fi
